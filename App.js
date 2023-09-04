@@ -1,9 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { AnalyticsScreen, ExpenseScreen, MainScreen } from './src/app/screens';
+import { AnalyticsScreen, ExpenseScreen, MainScreen, SearchScreen } from './src/app/screens';
 
 const Tab = createBottomTabNavigator();
+const MainStack = createNativeStackNavigator();
+
+const MainStackScreen = () => (
+    <MainStack.Navigator>
+      <MainStack.Screen name="MainStack" component={MainScreen} options={{ title: 'My expenses' }} />
+      <MainStack.Screen name="Search" component={SearchScreen} />
+    </MainStack.Navigator>
+)
 
 export default function App() {
   return (
@@ -17,7 +26,7 @@ export default function App() {
             let iconName;
             let iconSize;
 
-            if (route.name === 'Main') {
+            if (route.name === 'MainTab') {
               iconName = 'apps'
             } else if (route.name === 'Expense') {
               iconName = 'add-circle'
@@ -34,7 +43,7 @@ export default function App() {
       >
         <Tab.Screen name="Analytics" component={AnalyticsScreen} />
         <Tab.Screen name="Expense" component={ExpenseScreen} />
-        <Tab.Screen name="Main" component={MainScreen} options={{ title: 'My expenses' }}/>
+        <Tab.Screen name="MainTab" component={MainStackScreen} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );
