@@ -7,5 +7,9 @@ export const MainScreen = ({ navigation }) => (
             title="Go to Search"
             onPress={() => navigation.navigate('Search')}
         />
+        <Button
+            title="Go to Categories"
+            onPress={() => navigation.navigate('Categories')}
+        />
     </View>
 )
