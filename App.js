@@ -27,14 +27,14 @@ export default function App() {
 
             iconName = focused ? iconName : iconName + '-outline';
             iconSize = focused ? size * 1.5 : size;
-            
+
             return <Ionicons name={iconName} size={iconSize} color={color} />;
           }
         })}
       >
         <Tab.Screen name="Analytics" component={AnalyticsScreen} />
         <Tab.Screen name="Expense" component={ExpenseScreen} />
-        <Tab.Screen name="Main" component={MainScreen} />
+        <Tab.Screen name="Main" component={MainScreen} options={{ title: 'My expenses' }}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
