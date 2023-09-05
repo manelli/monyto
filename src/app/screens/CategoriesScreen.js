@@ -74,7 +74,7 @@ export const CategoriesScreen = ({ navigation }) => {
                                 <Button
                                     title="Add"
                                     color="black"
-                                    onPress={() => console.log("n: "+newCategoryName+" e: "+newCategoryEmoji) && setModalVisible(!modalVisible)}>
+                                    onPress={() => setModalVisible(!modalVisible)}>
                                 </Button>
                             </View>
                     </View>
