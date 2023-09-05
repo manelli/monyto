@@ -39,9 +39,9 @@ export default function App() {
     storeDefaultCategories();
   }, []);
 
-const storeDefaultCategories = async () => {
-  await storeData('categories', defaultCategories);
-};
+  const storeDefaultCategories = async () => {
+    await storeData('categories', defaultCategories);
+  };
 
   return (
     <NavigationContainer>
