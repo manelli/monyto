@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Pressable, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {Picker} from '@react-native-picker/picker';
 import { getData } from '../utils';
 
 export const ExpenseScreen = () => {
   const [input, setInput] = useState('');
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
 
   useEffect(() => {
     fetchCategories();
@@ -53,6 +55,17 @@ export const ExpenseScreen = () => {
             value={description}
             placeholder="Add description"
         />
+
+        <Picker
+          mode='dialog'
+          style={{width: 250}}
+          selectedValue={selectedCategory}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedCategory(itemValue)
+          }>
+            {categories.map((item, index) => (
+              <Picker.Item label={`${item.emoji} ${item.name}`} value={item.name} />))}
+        </Picker>
 
         <View style={styles.buttonRow}>
             {[1, 2, 3].map((num) => (
