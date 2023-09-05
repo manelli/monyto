@@ -3,23 +3,6 @@ import { View, Text, FlatList, Modal, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getData, storeData } from '../utils';
 
-const defaultCategories = [
-    { emoji: '🍽️', name: 'Restaurant' },
-    { emoji: '🚗', name: 'Transportation' },
-    { emoji: '🛒', name: 'Groceries' },
-    { emoji: '🏠', name: 'Housing' },
-    { emoji: '🏥', name: 'Healthcare' },
-    { emoji: '🎓', name: 'Education' },
-    { emoji: '💻', name: 'Technology' },
-    { emoji: '🛍️', name: 'Shopping' },
-    { emoji: '📚', name: 'Books' },
-    { emoji: '✈️', name: 'Travel' },
-    { emoji: '🎁', name: 'Gifts' },
-    { emoji: '🏋️‍♂️', name: 'Fitness' },
-    { emoji: '🌲', name: 'Outdoor' },
-    { emoji: '🎥', name: 'Entertainment' },
-];
-
 const CategoryView = ({item}) => (
     <View style={{ flexDirection: 'row', alignItems: 'center', height: 44, padding: 10 }}>
         <Text style={{ fontSize: 24 }}>{item.emoji}</Text>
@@ -37,16 +20,16 @@ export const CategoriesScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchCategories();
-      }, []);
+    }, []);
 
     const fetchCategories = async () => {
         const currentCategories = await getData('categories');
-        setCategories(currentCategories || defaultCategories);
+        setCategories(currentCategories);
     };
 
     const addCategory = async () => {
         setModalVisible(!modalVisible);
-        let currentCategories = await getData('categories') || defaultCategories;
+        let currentCategories = await getData('categories');
         currentCategories.push({emoji: newCategoryEmoji, name: newCategoryName});
         await storeData('categories', currentCategories);
         setCategories(currentCategories);
