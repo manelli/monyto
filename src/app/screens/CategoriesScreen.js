@@ -27,7 +27,7 @@ const CategoryView = ({item}) => (
     </View>
 )
 
-const SeparatorView = () => (<View style={{ height: 0.5, width: '100%', backgroundColor: '#bcbcbc' }} />)
+const SeparatorView = () => (<View style={{ height: 0.5, width: '100%', backgroundColor: '#BDC4A7' }} />)
 
 export const CategoriesScreen = ({ navigation }) => {
     const [categories, setCategories] = useState([]);
@@ -91,7 +91,7 @@ export const CategoriesScreen = ({ navigation }) => {
 
                                 <Button
                                     title="Add"
-                                    color="black"
+                                    color="#2F2F2F"
                                     onPress={addCategory}>
                                 </Button>
                             </View>
@@ -100,7 +100,7 @@ export const CategoriesScreen = ({ navigation }) => {
 
                 <Button
                     title="Add category"
-                    color="black"
+                    color="#2F2F2F"
                     onPress={() => setModalVisible(true)}>
                 </Button>
             </View>

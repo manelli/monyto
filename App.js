@@ -22,8 +22,8 @@ export default function App() {
         initialRouteName='Main'
         screenOptions={({ route }) => ({
           tabBarShowLabel: false,
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: '#2F2F2F',
+          tabBarInactiveTintColor: '#93827F',
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             let iconSize;
