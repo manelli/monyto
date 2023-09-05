@@ -64,7 +64,7 @@ export const ExpenseScreen = () => {
             setSelectedCategory(itemValue)
           }>
             {categories.map((item, index) => (
-              <Picker.Item label={`${item.emoji} ${item.name}`} value={item.name} />))}
+              <Picker.Item key={index} label={`${item.emoji} ${item.name}`} value={item.name} />))}
         </Picker>
 
         <View style={styles.buttonRow}>
