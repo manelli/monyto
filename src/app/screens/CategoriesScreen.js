@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, FlatList, Modal, Button, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getData, storeData } from '../utils';
 
-const categoriesData = [
+const defaultCategories = [
     { emoji: '🍽️', name: 'Restaurant' },
-    { emoji: '🍱', name: 'Sushi' },
     { emoji: '🚗', name: 'Transportation' },
     { emoji: '🛒', name: 'Groceries' },
     { emoji: '🏠', name: 'Housing' },
@@ -17,8 +18,8 @@ const categoriesData = [
     { emoji: '🏋️‍♂️', name: 'Fitness' },
     { emoji: '🌲', name: 'Outdoor' },
     { emoji: '🎥', name: 'Entertainment' },
-  ];
-  
+];
+
 const CategoryView = ({item}) => (
     <View style={{ flexDirection: 'row', alignItems: 'center', height: 44, padding: 10 }}>
         <Text style={{ fontSize: 24 }}>{item.emoji}</Text>
@@ -29,10 +30,27 @@ const CategoryView = ({item}) => (
 const SeparatorView = () => (<View style={{ height: 0.5, width: '100%', backgroundColor: '#bcbcbc' }} />)
 
 export const CategoriesScreen = ({ navigation }) => {
+    const [categories, setCategories] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
     const [newCategoryEmoji, setNewCategoryEmoji] = useState('');
 
+    useEffect(() => {
+        fetchCategories();
+      }, []);
+
+    const fetchCategories = async () => {
+        const currentCategories = await getData('categories');
+        setCategories(currentCategories || defaultCategories);
+    };
+
+    const addCategory = async () => {
+        setModalVisible(!modalVisible);
+        let currentCategories = await getData('categories') || defaultCategories;
+        currentCategories.push({emoji: newCategoryEmoji, name: newCategoryName});
+        await storeData('categories', currentCategories);
+        setCategories(currentCategories);
+    };
 
     return (
         <View style={{ marginLeft: 10, marginRight: 10, marginBottom: 10, marginTop: 20}}>
@@ -74,7 +92,7 @@ export const CategoriesScreen = ({ navigation }) => {
                                 <Button
                                     title="Add"
                                     color="black"
-                                    onPress={() => setModalVisible(!modalVisible)}>
+                                    onPress={addCategory}>
                                 </Button>
                             </View>
                     </View>
@@ -90,7 +108,7 @@ export const CategoriesScreen = ({ navigation }) => {
             <SeparatorView/>
 
             <FlatList
-                data={categoriesData}
+                data={categories}
                 ItemSeparatorComponent={SeparatorView}
                 renderItem={CategoryView}
                 keyExtractor={(category) => category.name}
