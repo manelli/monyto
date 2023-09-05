@@ -19,6 +19,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName='Main'
         screenOptions={({ route }) => ({
           tabBarShowLabel: false,
           tabBarActiveTintColor: 'black',
