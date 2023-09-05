@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { AnalyticsScreen, ExpenseScreen, MainScreen, SearchScreen, CategoriesScreen } from './src/app/screens';
+import { storeData } from './src/app/utils';
+import { useEffect } from 'react';
 
 const Tab = createBottomTabNavigator();
 const MainStack = createNativeStackNavigator();
@@ -15,7 +17,32 @@ const MainStackScreen = () => (
     </MainStack.Navigator>
 )
 
+const defaultCategories = [
+  { emoji: '🍽️', name: 'Restaurant' },
+  { emoji: '🚗', name: 'Transportation' },
+  { emoji: '🛒', name: 'Groceries' },
+  { emoji: '🏠', name: 'Housing' },
+  { emoji: '🏥', name: 'Healthcare' },
+  { emoji: '🎓', name: 'Education' },
+  { emoji: '💻', name: 'Technology' },
+  { emoji: '🛍️', name: 'Shopping' },
+  { emoji: '📚', name: 'Books' },
+  { emoji: '✈️', name: 'Travel' },
+  { emoji: '🎁', name: 'Gifts' },
+  { emoji: '🏋️‍♂️', name: 'Fitness' },
+  { emoji: '🌲', name: 'Outdoor' },
+  { emoji: '🎥', name: 'Entertainment' },
+];
+
 export default function App() {
+  useEffect(() => {
+    storeDefaultCategories();
+  }, []);
+
+const storeDefaultCategories = async () => {
+  await storeData('categories', defaultCategories);
+};
+
   return (
     <NavigationContainer>
       <Tab.Navigator
