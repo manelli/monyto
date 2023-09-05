@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, FlatList, Modal, Button } from 'react-native';
+import { View, Text, FlatList, Modal, Button, TextInput } from 'react-native';
 
 const categoriesData = [
     { emoji: '🍽️', name: 'Restaurant' },
@@ -30,6 +30,9 @@ const SeparatorView = () => (<View style={{ height: 0.5, width: '100%', backgrou
 
 export const CategoriesScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState('');
+    const [newCategoryEmoji, setNewCategoryEmoji] = useState('');
+
 
     return (
         <View style={{ marginLeft: 10, marginRight: 10, marginBottom: 10, marginTop: 20}}>
@@ -56,11 +59,22 @@ export const CategoriesScreen = ({ navigation }) => {
                                 shadowRadius: 4,
                                 elevation: 5,
                             }}>
-                                <Text>INPUT SHOULD BE HERE</Text>
+                                <TextInput
+                                    style={{padding: 10, fontSize: 21}}
+                                    placeholder='Category name'
+                                    onChangeText={cn => setNewCategoryName(cn)}
+                                />
+                                <TextInput
+                                    style={{padding: 10, fontSize: 21}}
+                                    placeholder='Category emoji'
+                                    onChangeText={ce => setNewCategoryEmoji(ce)}
+                                    maxLength={2}
+                                />
+
                                 <Button
                                     title="Add"
                                     color="black"
-                                    onPress={() => setModalVisible(!modalVisible)}>
+                                    onPress={() => console.log("n: "+newCategoryName+" e: "+newCategoryEmoji) && setModalVisible(!modalVisible)}>
                                 </Button>
                             </View>
                     </View>
