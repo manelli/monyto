@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Pressable, StyleSheet, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
-import { getData } from '../utils';
+import { multiGetData, storeData } from '../utils';
 
 export const ExpenseScreen = () => {
   const [input, setInput] = useState('');
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
 
   useEffect(() => {
-    fetchCategories();
+    fetchCategoriesAndExpenses();
   }, []);
 
-  const fetchCategories = async () => {
-    const currentCategories = await getData('categories');
-    setCategories(currentCategories);
+  const fetchCategoriesAndExpenses = async () => {
+    const data = await multiGetData(['expenses', 'categories']);
+    setExpenses(data['expenses'] || []);
+    setCategories(data['categories'] || []);
   };
 
   const handleButtonPress = (value) => {
@@ -32,11 +34,21 @@ export const ExpenseScreen = () => {
     setDescription('');
   };
 
-  const handleSubmit = () => {
-    // You can handle the submission here, e.g., perform calculations.
-    // For simplicity, we'll just clear the input.
+  const handleSubmit = async () => {
+    const newExpense = {
+      category: selectedCategory,
+      amount: input,
+      description: description,
+    };
+    expenses.push(newExpense);
+    await storeData('expenses', expenses);
+    setExpenses(expenses);
+
     clearData();
+    Alert.alert('Expense recorded');
   };
+
+  console.log('expenses', JSON.stringify(expenses))
 
   return (
     <View style={styles.container}>
