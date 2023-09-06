@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Pressable, StyleSheet, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { multiGetData, storeData } from '../utils';
 
 export const ExpenseScreen = () => {
@@ -10,6 +11,7 @@ export const ExpenseScreen = () => {
   const [categories, setCategories] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     fetchCategoriesAndExpenses();
@@ -37,8 +39,9 @@ export const ExpenseScreen = () => {
   const handleSubmit = async () => {
     const newExpense = {
       category: selectedCategory,
-      amount: input,
+      amount: parseFloat(input),
       description: description,
+      date: date,
     };
     expenses.push(newExpense);
     await storeData('expenses', expenses);
@@ -48,14 +51,14 @@ export const ExpenseScreen = () => {
     Alert.alert('Expense recorded');
   };
 
-  console.log('expenses', JSON.stringify(expenses))
-
   return (
     <View style={styles.container}>
 
+        <DateTimePicker value={date} onChange={(e, d) => setDate(d)} />
+
         <View style={styles.amountContainer}>
             <Text style={{fontSize: 28}}>{'$'}</Text>
-            <Text style={styles.amountText}>{input}</Text>
+            <Text style={styles.amountText}>{input} </Text>
             <Pressable onPress={backspaceAmount}>
                 <Ionicons name='backspace-outline' size={28} color='#2F2F2F' />
             </Pressable>
@@ -188,5 +191,6 @@ const styles = StyleSheet.create({
   amountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 20,
   },
 });
