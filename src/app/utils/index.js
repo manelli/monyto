@@ -31,4 +31,6 @@ const multiGetData = async (keys) => {
   }
 };
 
-export { getData, storeData, multiGetData }
+const randKey = () => (Math.random().toString(36).slice(2, 8))
+
+export { getData, storeData, multiGetData, randKey }

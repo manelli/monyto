@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, Pressable, StyleSheet, Alert } from 'rea
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { multiGetData, storeData } from '../utils';
+import { multiGetData, randKey, storeData } from '../utils';
 
 export const ExpenseScreen = () => {
   const [input, setInput] = useState('');
@@ -38,6 +38,7 @@ export const ExpenseScreen = () => {
 
   const handleSubmit = async () => {
     const newExpense = {
+      key: randKey(),
       category: selectedCategory,
       amount: parseFloat(input),
       description: description,
