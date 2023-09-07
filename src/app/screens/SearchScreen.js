@@ -1,28 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, TextInput, Button, SectionList, Text, StyleSheet } from 'react-native';
-import { multiGetData } from '../utils';
-
-const groupByDate = (expenses, categories) => {
-    const groupedExpenses = {};
-    expenses.forEach((e) => {
-      const title = new Date(e.date).toDateString()
-      e['emoji'] = categories[e.category];
-      if (groupedExpenses[title]) {
-        groupedExpenses[title].data.push(e);
-      } else {
-        groupedExpenses[title] = { title, data: [e] };
-      }
-    });
-    return Object.values(groupedExpenses);
-};
-
-const transformCategories = (cats) => {
-    const descriptionEmoji = {};
-    for (const c of cats) {
-        descriptionEmoji[c.name] = c.emoji;
-    }
-    return descriptionEmoji;
-};
+import { multiGetData, groupByDate, transformCategories } from '../utils';
 
 export const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
