@@ -50,7 +50,18 @@ export const MainScreen = ({ navigation }) => {
             filtered = allExpenses;
         }
 
+        setAmount(calculateAmount(filtered));
         setExpenses(filtered);
+    };
+
+    const calculateAmount = (exps) => {
+        let sum = 0;
+        exps.forEach((exp) => {
+            exp.data.forEach((e) => {
+                sum += e.amount;
+            });
+        });
+        return sum;
     };
 
     return (
