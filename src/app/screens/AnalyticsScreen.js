@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import { VictoryBar, VictoryLine, VictoryChart, VictoryTheme, VictoryTooltip, VictoryLabel } from 'victory-native';
+import { VictoryBar, VictoryLine, VictoryChart, VictoryTooltip, VictoryPie, VictoryAxis } from 'victory-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { multiGetData } from '../utils';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -8,6 +9,9 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 export const AnalyticsScreen = () => {
     const [categories, setCategories] = useState([]);
     const [expenses, setExpenses] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([]);
 
     useEffect(() => {
         fetchData();
@@ -15,8 +19,19 @@ export const AnalyticsScreen = () => {
 
     const fetchData = async () => {
         const data = await multiGetData(['expenses', 'categories']);
-        setExpenses(data['expenses'] || []);
-        setCategories(data['categories'] || []);
+        const exps = data['expenses'] || [];
+        const cats = (data['categories'] || []).reduce(
+            (obj, item) => Object.assign(obj, { [item.name]: item.emoji }), {});
+
+        let years = [];
+        [...new Set(exps.map((e) => (new Date(e.date)).getFullYear()))].sort().forEach((y) => {
+            years.push({label: y, value: y});
+        });
+
+        setItems(years);
+        setValue(years[0].value);
+        setExpenses(exps);
+        setCategories(cats);
     };
 
     const monthlyExpenses = () => {
@@ -26,6 +41,9 @@ export const AnalyticsScreen = () => {
         expenses.forEach((e) => {
             d = new Date(e.date);
             m = d.toDateString().slice(4, 7);
+
+            if (d.getFullYear() !== value)
+                return;
 
             if (sum[m])
                 sum[m] = sum[m] + e.amount;
@@ -40,8 +58,43 @@ export const AnalyticsScreen = () => {
         return res;
     };
 
+    const yearlyExpensesByCategory = () => {
+        let sum = {};
+        let res = [];
+        expenses.forEach((e) => {
+            d = new Date(e.date);
+
+            if (d.getFullYear() !== value)
+                return;
+
+            if (sum[e.category])
+                sum[e.category] = sum[e.category] + 1;
+            else
+                sum[e.category] = 1;
+        });
+
+        Object.entries(sum).forEach((e) => {
+            const [cat, count] = e;
+            res.push({x: cat, y: count})
+        });
+
+        return res;
+    };
+
     return (
         <View style={styles.container}>
+            <View style={styles.header}>
+                <DropDownPicker
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    placeholder='Select a year'
+                />
+            </View>
+
             <ScrollView>
 
                 <Text style={styles.title}>Monthly expenses</Text>
@@ -52,12 +105,14 @@ export const AnalyticsScreen = () => {
                         y='expenses'
                         labelComponent={<VictoryTooltip renderInPortal={false}/>}
                         labels={({ datum }) => `$${datum.expenses}`}
-                        animate={{
-                            duration: 2000,
-                            onLoad: { duration: 1000 }
-                        }}
                         cornerRadius={{ top: 3 }}
                     />
+                </VictoryChart>
+
+                <Text style={styles.title}>Yearly expenses by category</Text>
+                <VictoryChart height={370}>
+                    <VictoryPie data={yearlyExpensesByCategory()}/>
+                      <VictoryAxis style={{ axis: {stroke: 'transparent'}, ticks: {stroke: 'transparent'}, tickLabels: { fill: 'transparent'} }} />
                 </VictoryChart>
 
             </ScrollView>
@@ -70,10 +125,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
     padding: 10
   },
   title: {
     fontSize: 32
-  }
+  },
+  header: {
+    flexDirection: 'row',
+    width: 250,
+    marginTop: 10,
+    marginBottom: 20,
+  },
 });
