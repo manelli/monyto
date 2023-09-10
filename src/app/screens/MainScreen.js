@@ -61,7 +61,7 @@ export const MainScreen = ({ navigation }) => {
                 sum += e.amount;
             });
         });
-        return sum;
+        return sum.toFixed(2);;
     };
 
     return (
