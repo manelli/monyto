@@ -46,6 +46,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        unmountOnBlur
         initialRouteName='Main'
         screenOptions={({ route }) => ({
           tabBarShowLabel: false,
