@@ -70,9 +70,9 @@ export default function App() {
           }
         })}
       >
-        <Tab.Screen name="Analytics" component={AnalyticsScreen} />
-        <Tab.Screen name="Expense" component={ExpenseScreen} />
         <Tab.Screen name="MainTab" component={MainStackScreen} options={{ headerShown: false }} />
+        <Tab.Screen name="Expense" component={ExpenseScreen} />
+        <Tab.Screen name="Analytics" component={AnalyticsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
