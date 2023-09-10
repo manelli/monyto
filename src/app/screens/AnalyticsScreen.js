@@ -29,7 +29,7 @@ export const AnalyticsScreen = () => {
         });
 
         setItems(years);
-        setValue(years[0].value);
+        setValue((new Date()).getFullYear());
         setExpenses(exps);
         setCategories(cats);
     };
