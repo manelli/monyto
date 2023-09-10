@@ -13,12 +13,12 @@ export const MainScreen = ({ navigation }) => {
     const [categories, setCategories] = useState({});
 
     useEffect(() => {
-        fetchData();
+        recalculateData();
     }, [period]);
 
     useFocusEffect(
         useCallback(() => {
-          return () => fetchData();
+            fetchData()
         }, [])
     );
 
@@ -29,36 +29,43 @@ export const MainScreen = ({ navigation }) => {
         for(i in exps)
             exps[i]['date'] = new Date(exps[i]['title'])
         exps.sort((a, b) => b.date - a.date)
+        const amnt = calculateAmount(exps);
 
+        setAmount(amnt);
         setExpenses(exps);
         setAllExpenses(exps);
         setCategories(cats);
     };
 
-    const filterExpenses = (p) => {
-        setPeriod(p);
+    const recalculateData = () => {
+        const newExpenses = filterExpenses(period, allExpenses);
+        const newAmount = calculateAmount(newExpenses);
 
+        setAmount(newAmount);
+        setExpenses(newExpenses);
+    };
+
+    const filterExpenses = (p, ae) => {
         const today = new Date();
         let filtered;
 
         if (p == 'today') {
-            filtered = allExpenses.filter((e) => e.title == today.toDateString())
+            filtered = ae.filter((e) => e.title == today.toDateString())
         } else if (p == 'week') {
             const startWeek = new Date(today.setDate(today.getDate() - today.getDay()));
             const endofWeek = new Date(today.setDate(today.getDate() - today.getDay()+6));
-            filtered = allExpenses.filter((e) => e.date >= startWeek && e.date <= endofWeek)
+            filtered = ae.filter((e) => e.date >= startWeek && e.date <= endofWeek)
         } else if (p == 'month') {
-            filtered = allExpenses.filter((e) =>
+            filtered = ae.filter((e) =>
                 (e.date.getMonth() == today.getMonth()) && (e.date.getFullYear() == today.getFullYear())
             )
         } else if (p == 'year') {
-            filtered = allExpenses.filter((e) => e.date.getFullYear() == today.getFullYear())
+            filtered = ae.filter((e) => e.date.getFullYear() == today.getFullYear())
         } else {
-            filtered = allExpenses;
+            filtered = ae;
         }
 
-        setAmount(calculateAmount(filtered));
-        setExpenses(filtered);
+        return filtered;
     };
 
     const calculateAmount = (exps) => {
@@ -68,7 +75,7 @@ export const MainScreen = ({ navigation }) => {
                 sum += e.amount;
             });
         });
-        return sum.toFixed(2);;
+        return sum.toFixed(2);
     };
 
     return (
@@ -91,7 +98,7 @@ export const MainScreen = ({ navigation }) => {
                     mode='dialog'
                     style={{width: 250}}
                     selectedValue={period}
-                    onValueChange={(itemValue, itemIndex) => filterExpenses(itemValue)}>
+                    onValueChange={(itemValue, itemIndex) => setPeriod(itemValue)}>
                         <Picker.Item label='ALL TIME' value='all' />
                         <Picker.Item label='TODAY' value='today' />
                         <Picker.Item label='THIS WEEK' value='week' />
