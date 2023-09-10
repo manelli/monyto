@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryTooltip, VictoryPie, VictoryAxis } from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { multiGetData } from '../utils';
+import { useFocusEffect } from '@react-navigation/native';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -16,6 +17,12 @@ export const AnalyticsScreen = () => {
     useEffect(() => {
         fetchData();
       }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            return () => fetchData();
+        }, [])
+    );
 
     const fetchData = async () => {
         const data = await multiGetData(['expenses', 'categories']);
