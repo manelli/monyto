@@ -1,11 +1,12 @@
 import { Text, View, SectionList, StyleSheet, Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { multiGetData, groupByDate, transformCategories } from '../utils';
 
 export const MainScreen = ({ navigation }) => {
-    const [period, setPeriod] = useState('');
+    const [period, setPeriod] = useState('all');
     const [amount, setAmount] = useState('0');
     const [expenses, setExpenses] = useState([]);
     const [allExpenses, setAllExpenses] = useState([]);
@@ -13,7 +14,13 @@ export const MainScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchData();
-      }, []);
+    }, [period]);
+
+    useFocusEffect(
+        useCallback(() => {
+          return () => fetchData();
+        }, [])
+    );
 
     const fetchData = async () => {
         const data = await multiGetData(['expenses', 'categories']);
