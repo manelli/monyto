@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Pressable, StyleSheet, Alert, Platform } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -12,6 +12,7 @@ export const ExpenseScreen = () => {
   const [expenses, setExpenses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
   const [date, setDate] = useState(new Date());
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   useEffect(() => {
     fetchCategoriesAndExpenses();
@@ -52,10 +53,25 @@ export const ExpenseScreen = () => {
     Alert.alert('Expense recorded');
   };
 
+  const Calendar = () => {
+    if (Platform.OS == 'android') {
+      if (!calendarOpen) {
+        return <Button color="#2F2F2F" title={date.toDateString()} onPress={() => setCalendarOpen(true)} />
+      } else {
+        return <DateTimePicker value={date} onChange={(e, d) => {
+          setCalendarOpen(false)
+          setDate(d)
+        }} />
+      }
+    } else {
+      return <DateTimePicker value={date} onChange={(e, d) => setDate(d)} />
+    }
+  };
+
   return (
     <View style={styles.container}>
 
-        <DateTimePicker value={date} onChange={(e, d) => setDate(d)} />
+        <Calendar />
 
         <View style={styles.amountContainer}>
             <Text style={{fontSize: 28}}>{'$'}</Text>
