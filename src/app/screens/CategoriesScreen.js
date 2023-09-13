@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, Modal, Button, TextInput } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getData, storeData } from '../utils';
 
@@ -20,7 +21,13 @@ export const CategoriesScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchCategories();
-    }, []);
+    }, [newCategoryName, newCategoryEmoji]);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchCategories()
+        }, [])
+    );
 
     const fetchCategories = async () => {
         const currentCategories = await getData('categories');

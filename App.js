@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { AnalyticsScreen, ExpenseScreen, MainScreen, SearchScreen, CategoriesScreen } from './src/app/screens';
-import { storeData } from './src/app/utils';
+import { getData, storeData } from './src/app/utils';
 import { useEffect } from 'react';
 
 const Tab = createBottomTabNavigator();
@@ -40,7 +40,12 @@ export default function App() {
   }, []);
 
   const storeDefaultCategories = async () => {
-    await storeData('categories', defaultCategories);
+    const existingCategories = await getData('categories');
+    let categoriesSet = new Set();
+    existingCategories.forEach((c) => categoriesSet.add(JSON.stringify(c)));
+    defaultCategories.forEach((c) => categoriesSet.add(JSON.stringify(c)));
+    uniqCategories = [...categoriesSet].map((c) => (JSON.parse(c)));
+    await storeData('categories', uniqCategories);
   };
 
   return (
