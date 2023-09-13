@@ -35,6 +35,13 @@ export const CategoriesScreen = ({ navigation }) => {
 
     const addCategory = async () => {
         setModalVisible(!modalVisible);
+
+        if (newCategoryName == '' || newCategoryEmoji == '') {
+            setNewCategoryName('');
+            setNewCategoryEmoji('');
+            Alert.alert('Category name and emoji must be set');
+            return;
+        }
         let currentCategories = await getData('categories');
         const currentCatNames = currentCategories.map((c) => c.name);
         if (currentCatNames.includes(newCategoryName)) {
@@ -44,6 +51,8 @@ export const CategoriesScreen = ({ navigation }) => {
             await storeData('categories', currentCategories);
             setCategories(currentCategories);
         }
+        setNewCategoryName('');
+        setNewCategoryEmoji('');
     };
 
     return (
