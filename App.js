@@ -40,7 +40,7 @@ export default function App() {
   }, []);
 
   const storeDefaultCategories = async () => {
-    const existingCategories = await getData('categories');
+    const existingCategories = await getData('categories') || [];
     let categoriesSet = new Set();
     existingCategories.forEach((c) => categoriesSet.add(JSON.stringify(c)));
     defaultCategories.forEach((c) => categoriesSet.add(JSON.stringify(c)));
