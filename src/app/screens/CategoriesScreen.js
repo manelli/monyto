@@ -80,10 +80,17 @@ export const CategoriesScreen = ({ navigation }) => {
                                 />
 
                                 <Button
+                                    title="Close"
+                                    color="#2F2F2F"
+                                    onPress={() => setModalVisible(false)}>
+                                </Button>
+
+                                <Button
                                     title="Add"
                                     color="#2F2F2F"
                                     onPress={addCategory}>
                                 </Button>
+
                             </View>
                     </View>
                 </Modal>
