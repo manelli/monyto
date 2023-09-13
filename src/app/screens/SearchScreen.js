@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, TextInput, Button, SectionList, Text, StyleSheet } from 'react-native';
 import { multiGetData, groupByDate, transformCategories } from '../utils';
+import { ExpenseRow } from '../components/ExpenseRow';
 
 export const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
@@ -47,16 +48,17 @@ export const SearchScreen = () => {
         sections={searchResults}
         extraData={searchText}
         renderItem={({ item }) =>
-            <View style={styles.itemContainer}>
-                <Text style={styles.itemText}>{item.emoji}</Text>
-                <Text style={styles.itemText}>{item.description}</Text>
-                <Text style={styles.itemText}>-${item.amount}</Text>
-            </View>
+          <ExpenseRow
+              emoji={item.emoji}
+              text={item.description}
+              number={item.amount}
+              onPress={() => console.log('pressed', item.emoji)}
+          />
         }
         renderSectionHeader={({section: {title}}) => (
-            <View style={styles.sectionContainer}>
-                <Text style={styles.sectionText}>{title}</Text>
-            </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionText}>{title}</Text>
+          </View>
         )}
       />
     </View>

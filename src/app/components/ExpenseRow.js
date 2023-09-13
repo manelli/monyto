@@ -15,7 +15,7 @@ export const ExpenseRow = ({ emoji, text, number, onPress }) => {
                     <Text numberOfLines={1} style={{fontSize: 18, width: 150}}>{text}</Text>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={{fontSize: 20}}>{number}</Text>
+                    <Text style={{fontSize: 20}}>-${number}</Text>
                 </View>
             </View>
         </Pressable>
