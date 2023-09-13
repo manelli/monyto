@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, TextInput, Button, Pressable, StyleSheet, Alert, Platform } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
@@ -17,6 +18,12 @@ export const ExpenseScreen = () => {
   useEffect(() => {
     fetchCategoriesAndExpenses();
   }, []);
+
+  useFocusEffect(
+      useCallback(() => {
+        fetchCategoriesAndExpenses()
+      }, [])
+  );
 
   const fetchCategoriesAndExpenses = async () => {
     const data = await multiGetData(['expenses', 'categories']);
