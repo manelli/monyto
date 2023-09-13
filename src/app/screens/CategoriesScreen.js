@@ -12,7 +12,7 @@ const CategoryView = ({item}) => (
 
 const SeparatorView = () => (<View style={{ height: 0.5, width: '100%', backgroundColor: '#BDC4A7' }} />)
 
-export const CategoriesScreen = ({ navigation }) => {
+export const CategoriesScreen = () => {
     const [categories, setCategories] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');

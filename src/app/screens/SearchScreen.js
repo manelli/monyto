@@ -3,7 +3,7 @@ import { View, TextInput, Button, SectionList, Text, StyleSheet } from 'react-na
 import { multiGetData, groupByDate, transformCategories } from '../utils';
 import { ExpenseRow } from '../components/ExpenseRow';
 
-export const SearchScreen = () => {
+export const SearchScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [expenses, setExpenses] = useState([]);
@@ -52,7 +52,7 @@ export const SearchScreen = () => {
               emoji={item.emoji}
               text={item.description}
               number={item.amount}
-              onPress={() => console.log('pressed', item.emoji)}
+              onPress={() => navigation.jumpTo('Expense', {expenseKey: item.key})}
           />
         }
         renderSectionHeader={({section: {title}}) => (

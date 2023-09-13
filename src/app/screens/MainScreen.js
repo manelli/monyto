@@ -121,7 +121,7 @@ export const MainScreen = ({ navigation }) => {
                             emoji={item.emoji}
                             text={item.description}
                             number={item.amount}
-                            onPress={() => console.log('pressed', item.emoji)}
+                            onPress={() => navigation.jumpTo('Expense', {expenseKey: item.key})}
                         />
                     }
                     renderSectionHeader={({section: {title}}) => (

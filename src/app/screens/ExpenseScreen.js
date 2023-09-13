@@ -6,7 +6,8 @@ import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { multiGetData, randKey, storeData } from '../utils';
 
-export const ExpenseScreen = () => {
+export const ExpenseScreen = ({navigation, route}) => {
+  console.log('EXPENSE KEY', JSON.stringify(route))
   const [input, setInput] = useState('');
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
@@ -22,6 +23,9 @@ export const ExpenseScreen = () => {
   useFocusEffect(
       useCallback(() => {
         fetchCategoriesAndExpenses()
+        return () => {
+          navigation.setParams({expenseKey: null})
+        };
       }, [])
   );
 
