@@ -5,6 +5,28 @@ import { useState, useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { multiGetData, groupByDate, transformCategories } from '../utils';
 
+const Row = ({ emoji, text, number, onPress }) => {
+    return (
+      <Pressable onPress={onPress}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{fontSize: 24, width: 50}}>{emoji}</Text>
+          </View>
+          <View style={{alignItems: 'center'}}>
+            <Text numberOfLines={1} style={{fontSize: 18, width: 150}}>{text}</Text>
+          </View>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{fontSize: 20}}>{number}</Text>
+          </View>
+        </View>
+      </Pressable>
+    );
+  };
+
 export const MainScreen = ({ navigation }) => {
     const [period, setPeriod] = useState('all');
     const [amount, setAmount] = useState('0');
@@ -104,13 +126,11 @@ export const MainScreen = ({ navigation }) => {
                         <Picker.Item label='THIS WEEK' value='week' />
                         <Picker.Item label='THIS MONTH' value='month' />
                         <Picker.Item label='THIS YEAR' value='year' />
-
-
                 </Picker>
             </View>
 
             <View style={styles.amountContainer}>
-                <Text style={styles.amountText}>{amount}</Text>
+                <Text adjustsFontSizeToFit numberOfLines={1} style={styles.amountText}>{amount}</Text>
             </View>
 
             <View style={styles.listContainer}>
@@ -118,15 +138,16 @@ export const MainScreen = ({ navigation }) => {
                     sections={expenses}
                     extraData={period}
                     renderItem={({ item }) =>
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemText}>{item.emoji}</Text>
-                            <Text style={styles.itemText}>{item.description}</Text>
-                            <Text style={styles.itemText}>-${item.amount}</Text>
-                        </View>
+                        <Row
+                            emoji={item.emoji}
+                            text={item.description}
+                            number={item.amount}
+                            onPress={() => console.log('pressed', item.emoji)}
+                        />
                     }
                     renderSectionHeader={({section: {title}}) => (
                         <View style={styles.sectionContainer}>
-                            <Text style={styles.itemText}>{title}</Text>
+                            <Text style={styles.sectionText}>{title}</Text>
                         </View>
                     )}
                 />
@@ -154,16 +175,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     amountText: {
-        fontSize: 96
+        fontSize: 96,
     },
     listContainer: {
         alignItems: 'center',
         fontSize: 21
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 2,
     },
     sectionContainer: {
         marginTop: 21,
@@ -173,7 +189,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 5,
     },
-    itemText: {
+    sectionText: {
         fontSize: 20,
     },
 });
