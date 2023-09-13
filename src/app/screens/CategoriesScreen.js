@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, Modal, Button, TextInput } from 'react-native';
+import { View, Text, FlatList, Modal, Button, TextInput, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getData, storeData } from '../utils';
 
 const CategoryView = ({item}) => (
@@ -37,9 +36,14 @@ export const CategoriesScreen = ({ navigation }) => {
     const addCategory = async () => {
         setModalVisible(!modalVisible);
         let currentCategories = await getData('categories');
-        currentCategories.push({emoji: newCategoryEmoji, name: newCategoryName});
-        await storeData('categories', currentCategories);
-        setCategories(currentCategories);
+        const currentCatNames = currentCategories.map((c) => c.name);
+        if (currentCatNames.includes(newCategoryName)) {
+            Alert.alert(`Duplicated expense name '${newCategoryName}'`);
+        } else {
+            currentCategories.push({emoji: newCategoryEmoji, name: newCategoryName});
+            await storeData('categories', currentCategories);
+            setCategories(currentCategories);
+        }
     };
 
     return (
