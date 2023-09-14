@@ -6,7 +6,8 @@ import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { multiGetData, randKey, storeData } from '../utils';
 
-export const ExpenseScreen = () => {
+export const EditExpenseScreen = ({navigation, route}) => {
+  const [expenseKey, setExpenseKey] = useState(route.params.expenseKey);
   const [input, setInput] = useState('');
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
@@ -27,8 +28,16 @@ export const ExpenseScreen = () => {
 
   const fetchCategoriesAndExpenses = async () => {
     const data = await multiGetData(['expenses', 'categories']);
-    setExpenses(data['expenses'] || []);
-    setCategories(data['categories'] || []);
+    const exps = data['expenses'] || [];
+    const cats = data['categories'] || [];
+    const expense = exps.find((e) => e.key == expenseKey);
+
+    setInput(expense.amount.toString());
+    setDescription(expense.description);
+    setSelectedCategory(expense.category);
+    setDate(new Date(expense.date));
+    setExpenses(exps);
+    setCategories(cats);
   };
 
   const handleButtonPress = (value) => {
@@ -45,18 +54,21 @@ export const ExpenseScreen = () => {
   };
 
   const handleSubmit = async () => {
-    const newExpense = {
-      key: randKey(),
+    const editedExpense = {
+      key: expenseKey,
       category: selectedCategory,
       amount: parseFloat(input),
       description: description,
       date: date,
     };
-    expenses.push(newExpense);
+
+    expenses.forEach((e, i) => { if (e.key == expenseKey) expenses[i] = editedExpense; });
     await storeData('expenses', expenses);
-    setExpenses(expenses);
 
     clearData();
+
+    navigation.jumpTo('MainTab', { screen: 'MainStack'});
+
     Alert.alert('Expense recorded');
   };
 

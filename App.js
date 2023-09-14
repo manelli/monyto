@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { AnalyticsScreen, ExpenseScreen, MainScreen, SearchScreen, CategoriesScreen } from './src/app/screens';
+import { AnalyticsScreen, ExpenseScreen, EditExpenseScreen, MainScreen, SearchScreen, CategoriesScreen } from './src/app/screens';
 import { getData, storeData } from './src/app/utils';
 import { useEffect } from 'react';
 
@@ -14,6 +14,7 @@ const MainStackScreen = () => (
       <MainStack.Screen name="MainStack" component={MainScreen} options={{ title: 'My expenses' }} />
       <MainStack.Screen name="Search" component={SearchScreen} />
       <MainStack.Screen name="Categories" component={CategoriesScreen} />
+      <MainStack.Screen name="Edit Expense" component={EditExpenseScreen} />
     </MainStack.Navigator>
 )
 

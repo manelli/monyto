@@ -52,7 +52,8 @@ export const SearchScreen = ({ navigation }) => {
               emoji={item.emoji}
               text={item.description}
               number={item.amount}
-              onPress={() => navigation.jumpTo('Expense', {expenseKey: item.key})}
+              onPress={() => navigation.jumpTo('MainTab', { screen: 'Edit Expense', params: {expenseKey: item.key }})}
+
           />
         }
         renderSectionHeader={({section: {title}}) => (
