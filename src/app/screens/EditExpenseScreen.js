@@ -72,6 +72,18 @@ export const EditExpenseScreen = ({navigation, route}) => {
     Alert.alert('Expense updated');
   };
 
+  const handleDelete = async () => {
+    updatedExps = expenses.filter(e => e.key !== expenseKey);
+    setExpenses(updatedExps);
+    await storeData('expenses', updatedExps);
+
+    clearData();
+
+    navigation.jumpTo('MainTab', { screen: 'MainStack'});
+
+    Alert.alert('Expense deleted');
+  };
+
   const Calendar = () => {
     if (Platform.OS == 'android') {
       if (!calendarOpen) {
@@ -89,6 +101,12 @@ export const EditExpenseScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
+
+      <View style={{marginBottom: 10}}>
+        <Pressable onPress={handleDelete}>
+          <Ionicons name='trash' size={28} color='#2F2F2F' />
+        </Pressable>
+      </View>
 
         <Calendar />
 
