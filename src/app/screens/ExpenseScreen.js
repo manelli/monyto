@@ -52,6 +52,12 @@ export const ExpenseScreen = () => {
       description: description,
       date: date,
     };
+
+    if (!newExpense.category || !(newExpense.amount > 0) || !newExpense.description) {
+      Alert.alert('Please complete all fields')
+      return;
+    };
+
     expenses.push(newExpense);
     await storeData('expenses', expenses);
     setExpenses(expenses);
