@@ -62,6 +62,11 @@ export const EditExpenseScreen = ({navigation, route}) => {
       date: date,
     };
 
+    if (!editedExpense.category || !(editedExpense.amount > 0) || !editedExpense.description) {
+      Alert.alert('Please complete all fields')
+      return;
+    };
+
     expenses.forEach((e, i) => { if (e.key == expenseKey) expenses[i] = editedExpense; });
     await storeData('expenses', expenses);
 
