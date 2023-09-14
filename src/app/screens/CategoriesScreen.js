@@ -45,7 +45,7 @@ export const CategoriesScreen = () => {
         let currentCategories = await getData('categories');
         const currentCatNames = currentCategories.map((c) => c.name);
         if (currentCatNames.includes(newCategoryName)) {
-            Alert.alert(`Duplicated expense name '${newCategoryName}'`);
+            Alert.alert(`Duplicated category name '${newCategoryName}'`);
         } else {
             currentCategories.push({emoji: newCategoryEmoji, name: newCategoryName});
             await storeData('categories', currentCategories);

@@ -69,7 +69,7 @@ export const EditExpenseScreen = ({navigation, route}) => {
 
     navigation.jumpTo('MainTab', { screen: 'MainStack'});
 
-    Alert.alert('Expense recorded');
+    Alert.alert('Expense updated');
   };
 
   const Calendar = () => {
