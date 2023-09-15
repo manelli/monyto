@@ -39,7 +39,7 @@ export const CategoriesScreen = () => {
         if (newCategoryName == '' || newCategoryEmoji == '') {
             setNewCategoryName('');
             setNewCategoryEmoji('');
-            Alert.alert('Category name and emoji must be set');
+            Alert.alert('Category name and symbol must be set');
             return;
         }
         let currentCategories = await getData('categories');
@@ -87,7 +87,7 @@ export const CategoriesScreen = () => {
                                 />
                                 <TextInput
                                     style={{padding: 10, fontSize: 21}}
-                                    placeholder='Category emoji'
+                                    placeholder='Category symbol'
                                     onChangeText={ce => setNewCategoryEmoji(ce)}
                                     maxLength={2}
                                 />
