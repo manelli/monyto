@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import { VictoryBar, VictoryLine, VictoryChart, VictoryTooltip, VictoryPie, VictoryAxis } from 'victory-native';
+import { VictoryBar, VictoryChart, VictoryTooltip, VictoryPie, VictoryAxis } from 'victory-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { multiGetData } from '../utils';
 import { useFocusEffect } from '@react-navigation/native';
@@ -20,7 +20,7 @@ export const AnalyticsScreen = () => {
 
     useFocusEffect(
         useCallback(() => {
-            return () => fetchData();
+            fetchData()
         }, [])
     );
 
@@ -105,7 +105,7 @@ export const AnalyticsScreen = () => {
             <ScrollView>
 
                 <Text style={styles.title}>Monthly expenses</Text>
-                <VictoryChart>
+                <VictoryChart height={250}>
                     <VictoryBar
                         data={monthlyExpenses()}
                         x='month'
@@ -117,7 +117,7 @@ export const AnalyticsScreen = () => {
                 </VictoryChart>
 
                 <Text style={styles.title}>Yearly expenses by category</Text>
-                <VictoryChart height={370}>
+                <VictoryChart height={300}>
                     <VictoryPie data={yearlyExpensesByCategory()}/>
                       <VictoryAxis style={{ axis: {stroke: 'transparent'}, ticks: {stroke: 'transparent'}, tickLabels: { fill: 'transparent'} }} />
                 </VictoryChart>
