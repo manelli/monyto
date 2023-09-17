@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "68bc8fd1-4083-460c-b6d5-725c89addfd3"
+      }
+    },
+    "owner": "manelli"
   }
 }
