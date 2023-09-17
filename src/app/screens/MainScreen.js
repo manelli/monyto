@@ -1,6 +1,6 @@
 import { Text, View, SectionList, StyleSheet, Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import { useState, useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { multiGetData, groupByDate, transformCategories } from '../utils';
