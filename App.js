@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import { AnalyticsScreen, ExpenseScreen, EditExpenseScreen, MainScreen, SearchScreen, CategoriesScreen } from './src/app/screens';
 import { getData, storeData } from './src/app/utils';
 import { useEffect } from 'react';
